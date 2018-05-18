@@ -16,7 +16,7 @@ do
 
 		bytes="$(stat -c %s "$first")"
 		let size+=$bytes
-		[ -n "$files" ] && [ 200000 -lt "$size" ] && break
+		[ -n "$files" ] && [ 300000 -lt "$size" ] && break
 
 		git add "$first"
 
