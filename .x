@@ -1,26 +1,33 @@
 #!/bin/bash
 
-let size=0
-while	ok="$(git status --porcelain)" && [ -n "$ok" ]
+ok=:
+while	$ok
 do
-	first="${ok%%$'\n'*}"
-	first="${first:3}"
-	[ -d "$first" ] && [ ! -L "$first" ] && first="$(find "$first" ! -type d -print | head -1)"
+	let size=0;
+	files=""
+	while read -ru6 x first;
+	do
+		[ -d "$first" ] && [ ! -L "$first" ] && first="$(find "$first" ! -type d -print | head -1)"
 
-	echo "=== $first ==="
+		echo "=== $first ==="
 
-	[ -L "$first" ] || [ -f "$first" ] || break
+		[ -L "$first" ] || [ -f "$first" ] || continue
 
-	git add "$first"
-	size+=$(stat -c %s "$first")
-	[ 100000 -gt "$size" ] && continue
+		bytes="$stat -c %s "$first")"
+		let size+=$bytes
+		[ -n "$files" ] && [ 100000 -lt "$size" ] && continue
 
-	git commit -m "$first"
+		git add "$first"
+
+		files="$files$first"$'\n'
+
+	done 6< <(git status --porcelain)
+
+	git commit -m "$files"
 	git push || break
-
-	size=0
 
 	git status --porcelain
 
 	keypressed 20000 && break
 done
+
