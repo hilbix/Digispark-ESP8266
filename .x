@@ -13,5 +13,6 @@ do
 	git add "$first"
 	git commit -m "$first"
 	git push || break
-	sleep 10
+
+	keypressed 20000 && break
 done
