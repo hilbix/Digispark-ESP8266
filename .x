@@ -14,5 +14,7 @@ do
 	git commit -m "$first"
 	git push || break
 
+	git status --porcelain
+
 	keypressed 20000 && break
 done
