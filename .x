@@ -13,7 +13,7 @@ do
 
 	git add "$first"
 	size+=$(stat -c %s "$first")
-	[ 100000 -lt "$size" ] && continue
+	[ 100000 -gt "$size" ] && continue
 
 	git commit -m "$first"
 	git push || break
