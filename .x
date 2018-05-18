@@ -1,5 +1,6 @@
 #!/bin/bash
 
+let size=0
 while	ok="$(git status --porcelain)" && [ -n "$ok" ]
 do
 	first="${ok%%$'\n'*}"
@@ -11,8 +12,13 @@ do
 	[ -L "$first" ] || [ -f "$first" ] || break
 
 	git add "$first"
+	size+=$(stat -c %s "$first")
+	[ 100000 -lt "$size" ] && continue
+
 	git commit -m "$first"
 	git push || break
+
+	size=0
 
 	git status --porcelain
 
