@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 ok=:
 while	$ok
 do
@@ -13,7 +14,7 @@ do
 
 		[ -L "$first" ] || [ -f "$first" ] || continue
 
-		bytes="$stat -c %s "$first")"
+		bytes="$(stat -c %s "$first")"
 		let size+=$bytes
 		[ -n "$files" ] && [ 100000 -lt "$size" ] && continue
 
